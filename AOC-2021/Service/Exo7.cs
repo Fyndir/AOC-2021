@@ -20,6 +20,11 @@ namespace AOC_EXO7.Service
             return GrpFish.Count;
         }
 
+        /// <summary>
+        /// Fait evoluer le grp de poisson
+        /// </summary>
+        /// <param name="grpFish"></param>
+        /// <returns></returns>
         private List<long> EvolFish(List<long> grpFish)
         {
             List<long> grpFishFutur = new List<long>();
