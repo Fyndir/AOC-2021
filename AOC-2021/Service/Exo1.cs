@@ -18,18 +18,19 @@ namespace AOC_EXO7.Service
         /// </summary>
         public void Resolve()
         {
-            Console.WriteLine($"there are {CalculNbIncreseFromList()} measurements that are larger than the previous measurement.");
+            Console.WriteLine($"there are {CalculNbIncreseFromList(this.sonnar)} measurements that are larger than the previous measurement.");
+            Console.WriteLine($"there are {CalculNbIncreseFromListPart2()} measurements that are larger than the previous measurement. part 2");
         }
 
         /// <summary>
         /// Calcul le nombre d'occurence plus grand que l'ocurrence précedente
         /// </summary>
         /// <returns></returns>
-        private int CalculNbIncreseFromList()
+        private int CalculNbIncreseFromList(List<int> sonnarInput)
         {
             int nbIncrese = 0;
             int precedenceMsure = int.MaxValue;
-            foreach (int i in sonnar)
+            foreach (int i in sonnarInput)
             {
                 if (i > precedenceMsure)
                 {
@@ -39,6 +40,36 @@ namespace AOC_EXO7.Service
             }
 
             return nbIncrese;
+        }
+
+        /// <summary>
+        /// Calcul le nombre d'occurence plus grand que l'ocurrence précedente
+        /// </summary>
+        /// <returns></returns>
+        private int CalculNbIncreseFromListPart2()
+        {
+            List<int> sonnarInputs = new List<int>();
+
+            int i = 0;
+            foreach (int sonnarinput in sonnar)
+            {
+                int add = 0;
+                for (int j = 0; j < 3; j++)
+                {
+                    if (i + j < sonnar.Count)
+                    {
+                        add += sonnar[i + j];
+                    }
+                    else
+                    {
+                        return CalculNbIncreseFromList(sonnarInputs);
+                    }
+                }
+                i++;
+                sonnarInputs.Add(add);
+            }
+
+            return 0;
         }
     }
 }
