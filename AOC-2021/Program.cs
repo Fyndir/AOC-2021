@@ -9,7 +9,7 @@ namespace AOC_EXO7
     {
         private static void Main(string[] args)
         {
-            Exo1 exo = new Exo1();
+            Exo2 exo = new Exo2();
             exo.Resolve();
         }
     }

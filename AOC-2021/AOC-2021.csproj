@@ -6,4 +6,24 @@
     <RootNamespace>AOC_EXO7</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Input\Exo2Input.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Exo2Input.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Input\Exo2Input.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Exo2Input.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>
