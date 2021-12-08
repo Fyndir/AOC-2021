@@ -43,7 +43,7 @@ namespace AOC_EXO7.Service
         }
 
         /// <summary>
-        /// Calcul le nombre d'occurence plus grand que l'ocurrence précedente
+        /// Calcul le nombre d'occurence sommé 3 par 3 plus grand que l'ocurrence précedente
         /// </summary>
         /// <returns></returns>
         private int CalculNbIncreseFromListPart2()
