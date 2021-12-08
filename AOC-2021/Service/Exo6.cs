@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AOC_EXO7.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,65 +18,88 @@ namespace AOC_EXO7.Service
 
         public void Resolve()
         {
-            Console.WriteLine($"Nb poisson après {256} jours V2 {CalculNbFishUnGrpAfterDayInParamV2(GrpFish, 256)}");
+            int nbJour = 256;
+            List<DimensionPoisson> dimensionPoissons = GetDimensionPoissonsFromInput(this.GrpFish);
+            dimensionPoissons = EvolDimensionPoissons(dimensionPoissons, nbJour);
+            long nbPoisson = dimensionPoissons.Select(x => x.NbPoisson).Sum();
+            Console.WriteLine($"Apres {nbJour} jours il y a {nbPoisson} poissons new algo");
         }
 
-        /// <summary>
-        /// Calcule le nombre de poisson dans le grp passé en param apres X jours
-        /// </summary>
-        /// <param name="nbJours"></param>
-        private int CalculNbFishUnGrpAfterDayInParamV2(List<long> GrpFish, int nbJours)
+        private List<DimensionPoisson> GetDimensionPoissonsFromInput(List<long> grpFish)
         {
-            int nbFish = 0;
-            foreach (int fish in GrpFish.Distinct())
+            List<DimensionPoisson> dimensionPoissons = InitDimensionPoisson();
+            foreach (long fish in grpFish)
             {
-                nbFish += EvolFish(fish, nbJours) * GrpFish.Count(x => x == fish);
+                dimensionPoissons.Where(x => x.NbJourDuplication == fish).First().NbPoisson++;
             }
-
-            return nbFish;
+            return dimensionPoissons;
         }
 
-        /// <summary>
-        /// Fait evoluer le grp de poisson
-        /// </summary>
-        /// <param name="grpFish"></param>
-        /// <returns></returns>
-        private List<long> EvolFish(List<long> grpFish)
+        private List<DimensionPoisson> EvolDimensionPoissons(List<DimensionPoisson> dimensionPoissons, int nbJour)
         {
-            List<long> grpFishFutur = new List<long>();
-            Parallel.ForEach(grpFish, fish =>
-               {
-                   lock (grpFishFutur)
-                       if (fish == 0)
-                       {
-                           grpFishFutur.Add(8);
-                           grpFishFutur.Add(6);
-                       }
-                       else
-                       {
-                           grpFishFutur.Add(fish - 1);
-                       }
-               });
-
-            return grpFishFutur;
-        }
-
-        /// <summary>
-        /// calcul le nombre de poisson apres x jour pour un poission donn
-        /// </summary>
-        /// <param name="fish"></param>
-        /// <param name="nbDays"></param>
-        /// <returns></returns>
-        private int EvolFish(long inputFish, int nbDays)
-        {
-            List<long> grpFish = new List<long>() { inputFish };
-
-            for (int i = 1; i <= nbDays; i++)
+            for (int i = 1; i <= nbJour; i++)
             {
-                grpFish = EvolFish(grpFish);
+                dimensionPoissons = EvolDimensionPoissons(dimensionPoissons);
             }
+            return dimensionPoissons;
+        }
 
-            return grpFish.Count;
+        private List<DimensionPoisson> EvolDimensionPoissons(List<DimensionPoisson> dimensionPoissons)
+        {
+            List<DimensionPoisson> dimensionPoissonsFutur = InitDimensionPoisson();
+            foreach (DimensionPoisson dimensionPoisson in dimensionPoissons)
+            {
+                switch (dimensionPoisson.NbJourDuplication)
+                {
+                    case 0:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 6).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 8).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 1:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 0).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 2:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 1).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 3:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 2).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 4:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 3).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 5:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 4).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 6:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 5).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 7:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 6).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+
+                    case 8:
+                        dimensionPoissonsFutur.Where(x => x.NbJourDuplication == 7).FirstOrDefault().NbPoisson += dimensionPoisson.NbPoisson;
+                        break;
+                }
+            }
+            return dimensionPoissonsFutur;
+        }
+
+        private List<DimensionPoisson> InitDimensionPoisson()
+        {
+            List<DimensionPoisson> dimensionPoissons = new List<DimensionPoisson>();
+            for (int i = 0; i <= 8; i++)
+            {
+                dimensionPoissons.Add(new DimensionPoisson() { NbJourDuplication = i, NbPoisson = 0 });
+            }
+            return dimensionPoissons;
         }
     }
 }
