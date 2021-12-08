@@ -17,9 +17,9 @@ namespace AOC_EXO7.Service
 
         public void Resolve()
         {
-            PositionSousMarin positionSousMarin = new PositionSousMarin() { depth = 0, Foward = 0 };
+            PositionSousMarin positionSousMarin = new PositionSousMarin() { Depth = 0, Foward = 0 };
             positionSousMarin = EvolPositionSousMarin(positionSousMarin, DirectionCommandes);
-            Console.WriteLine($"After following these instructions, you would have a horizontal position of {positionSousMarin.Foward} and a depth of {positionSousMarin.depth}. (Multiplying these together produces {positionSousMarin.depth * positionSousMarin.Foward}.)");
+            Console.WriteLine($"After following these instructions, you would have a horizontal position of {positionSousMarin.Foward} and a depth of {positionSousMarin.Depth}. (Multiplying these together produces {positionSousMarin.Depth * positionSousMarin.Foward}.)");
         }
 
         private PositionSousMarin EvolPositionSousMarin(PositionSousMarin positionSousMarin, List<DirectionCommande> directionCommandes)
@@ -30,14 +30,15 @@ namespace AOC_EXO7.Service
                 {
                     case ("forward"):
                         positionSousMarin.Foward += directionCommande.Value;
+                        positionSousMarin.Depth += directionCommande.Value * positionSousMarin.Aim;
                         break;
 
                     case ("down"):
-                        positionSousMarin.depth += directionCommande.Value;
+                        positionSousMarin.Aim += directionCommande.Value;
                         break;
 
                     case ("up"):
-                        positionSousMarin.depth -= directionCommande.Value;
+                        positionSousMarin.Aim -= directionCommande.Value;
                         break;
                 }
             }
